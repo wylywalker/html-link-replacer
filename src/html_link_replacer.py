@@ -9,43 +9,66 @@ import platform
 class HTMLLinkReplacer:
     def __init__(self, root):
         self.root = root
-        self.root.title("HTML Link Replacer")
-        self.root.geometry("800x600")
-        self.root.minsize(800, 600)
-        
-        # Configure style
-        self.style = ttk.Style()
-        self.style.configure("TButton", padding=6, relief="flat", background="#2196F3")
-        self.style.configure("TLabel", padding=6)
-        self.style.configure("TEntry", padding=6)
-        
-        # Create main frame
-        self.main_frame = ttk.Frame(root, padding="20")
-        self.main_frame.pack(fill=tk.BOTH, expand=True)
-        
-        # Initialize variables
-        self.input_file = tk.StringVar()
-        self.output_folder = tk.StringVar()
-        
-        # Create widgets
-        self.create_widgets()
-        
-        # Set default values
-        self.set_default_paths()
-        
-        # Configure menu for macOS
-        if platform.system() == 'Darwin':
-            self.configure_macos_menu()
+        try:
+            self.root.title("HTML Link Replacer")
+            self.root.geometry("800x600")
+            self.root.minsize(800, 600)
+            
+            # Set up window close handler
+            self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+            
+            # Configure style
+            self.style = ttk.Style()
+            self.style.configure("TButton", padding=6, relief="flat", background="#2196F3")
+            self.style.configure("TLabel", padding=6)
+            self.style.configure("TEntry", padding=6)
+            
+            # Create main frame
+            self.main_frame = ttk.Frame(root, padding="20")
+            self.main_frame.pack(fill=tk.BOTH, expand=True)
+            
+            # Initialize variables
+            self.input_file = tk.StringVar()
+            self.output_folder = tk.StringVar()
+            
+            # Create widgets
+            self.create_widgets()
+            
+            # Set default values
+            self.set_default_paths()
+            
+            # Configure menu for macOS
+            if platform.system() == 'Darwin':
+                self.configure_macos_menu()
+        except Exception as e:
+            print(f"Error initializing application: {e}")
+            messagebox.showerror("Error", "Failed to initialize the application. Please try again.")
+            self.root.quit()
+
+    def on_closing(self):
+        """Handle window closing event"""
+        try:
+            # Clean up any resources if needed
+            self.root.quit()
+            self.root.destroy()
+        except Exception as e:
+            print(f"Error during window closing: {e}")
+            # Force exit if there's an error
+            os._exit(0)
 
     def configure_macos_menu(self):
-        # Create a minimal menu bar
-        menubar = tk.Menu(self.root)
-        self.root.config(menu=menubar)
-        
-        # Add a basic File menu
-        file_menu = tk.Menu(menubar, tearoff=0)
-        menubar.add_cascade(label="File", menu=file_menu)
-        file_menu.add_command(label="Exit", command=self.root.quit)
+        try:
+            # Create a minimal menu bar
+            menubar = tk.Menu(self.root)
+            self.root.config(menu=menubar)
+            
+            # Add a basic File menu
+            file_menu = tk.Menu(menubar, tearoff=0)
+            menubar.add_cascade(label="File", menu=file_menu)
+            file_menu.add_command(label="Exit", command=self.root.quit)
+        except Exception as e:
+            print(f"Warning: Could not configure menu bar: {e}")
+            # Continue without menu bar if there's an error
 
     def set_default_paths(self):
         # Set default paths to Desktop
@@ -178,6 +201,12 @@ class HTMLLinkReplacer:
             messagebox.showerror("Error", f"Failed to process HTML: {str(e)}")
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = HTMLLinkReplacer(root)
-    root.mainloop() 
+    try:
+        root = tk.Tk()
+        app = HTMLLinkReplacer(root)
+        root.mainloop()
+    except Exception as e:
+        print(f"Fatal error: {e}")
+        if 'root' in locals():
+            root.destroy()
+        os._exit(0)  # Ensure complete exit 
