@@ -113,6 +113,26 @@
             border-left: 4px solid #d97706;
         }
 
+        .warning {
+            background: #fee2e2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #dc2626;
+        }
+
+        .warning h3 {
+            color: #dc2626;
+            margin-bottom: 10px;
+        }
+
+        .screenshot {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 15px;
@@ -154,14 +174,28 @@
             <li>Open your Applications folder and double-click "HTML Link Replacer" to run it</li>
         </ol>
 
-        <div class="note">
-            <strong>Note:</strong> When opening the application for the first time, you might see a security warning because the app is from an unidentified developer. To open it anyway:
+        <div class="warning">
+            <h3>macOS Security Warning</h3>
+            <p>When opening the application for the first time, you'll see a security warning because the app is from an unidentified developer. Here's how to safely open it:</p>
             <ol class="steps">
-                <li>Right-click (or Control-click) the app in the Applications folder</li>
-                <li>Choose "Open" from the shortcut menu</li>
-                <li>Click "Open" in the dialog box</li>
+                <li>Go to your Applications folder and locate "HTML Link Replacer"</li>
+                <li>Right-click (or Control-click) the app icon</li>
+                <li>Select "Open" from the context menu</li>
+                <li>Click "Open" in the security dialog that appears</li>
             </ol>
-            After this first time, you can open it normally by double-clicking.
+            <p>After this first time, you can open the app normally by double-clicking it.</p>
+            
+            <h3>Alternative Method (System Settings)</h3>
+            <p>If you prefer, you can also allow the app through System Settings:</p>
+            <ol class="steps">
+                <li>Open System Settings (or System Preferences)</li>
+                <li>Go to "Privacy & Security"</li>
+                <li>Scroll down to the "Security" section</li>
+                <li>Look for a message about "HTML Link Replacer" being blocked</li>
+                <li>Click "Allow Anyway"</li>
+                <li>Enter your administrator password if prompted</li>
+                <li>Try opening the app again</li>
+            </ol>
         </div>
     </div>
 
