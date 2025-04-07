@@ -58,15 +58,31 @@ class HTMLLinkReplacer:
         input_frame = ttk.LabelFrame(self.main_frame, text="Select Input HTML File", padding="10")
         input_frame.pack(fill=tk.X, pady=10)
         
-        ttk.Entry(input_frame, textvariable=self.input_file, state='readonly').pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
-        ttk.Button(input_frame, text="Browse", command=self.select_input_file).pack(side=tk.RIGHT, padx=5)
+        # Create a frame to hold the entry and button
+        input_entry_frame = ttk.Frame(input_frame)
+        input_entry_frame.pack(fill=tk.X, expand=True)
+        
+        # Create the entry with a custom style to make it look like it's readonly
+        self.input_entry = ttk.Entry(input_entry_frame, textvariable=self.input_file)
+        self.input_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.input_entry.bind('<Key>', lambda e: 'break')  # Prevent typing
+        
+        ttk.Button(input_entry_frame, text="Browse", command=self.select_input_file).pack(side=tk.RIGHT, padx=5)
         
         # Output folder selection
         output_frame = ttk.LabelFrame(self.main_frame, text="Select Output Folder", padding="10")
         output_frame.pack(fill=tk.X, pady=10)
         
-        ttk.Entry(output_frame, textvariable=self.output_folder, state='readonly').pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
-        ttk.Button(output_frame, text="Browse", command=self.select_output_folder).pack(side=tk.RIGHT, padx=5)
+        # Create a frame to hold the entry and button
+        output_entry_frame = ttk.Frame(output_frame)
+        output_entry_frame.pack(fill=tk.X, expand=True)
+        
+        # Create the entry with a custom style to make it look like it's readonly
+        self.output_entry = ttk.Entry(output_entry_frame, textvariable=self.output_folder)
+        self.output_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=5)
+        self.output_entry.bind('<Key>', lambda e: 'break')  # Prevent typing
+        
+        ttk.Button(output_entry_frame, text="Browse", command=self.select_output_folder).pack(side=tk.RIGHT, padx=5)
         
         # Links text area
         links_frame = ttk.LabelFrame(self.main_frame, text="Paste Links (one per line)", padding="10")
@@ -86,6 +102,9 @@ class HTMLLinkReplacer:
         )
         if file_path:
             self.input_file.set(file_path)
+            # Update the entry to show the full path
+            self.input_entry.delete(0, tk.END)
+            self.input_entry.insert(0, file_path)
 
     def select_output_folder(self):
         folder_path = filedialog.askdirectory(
@@ -94,6 +113,9 @@ class HTMLLinkReplacer:
         )
         if folder_path:
             self.output_folder.set(folder_path)
+            # Update the entry to show the full path
+            self.output_entry.delete(0, tk.END)
+            self.output_entry.insert(0, folder_path)
 
     def extract_filename_from_url(self, url):
         # Remove the domain and query parameters
